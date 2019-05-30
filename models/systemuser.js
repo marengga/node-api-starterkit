@@ -3,29 +3,32 @@ var bcrypt = require('bcrypt-nodejs');
 
 module.exports = (sequelize, DataTypes) => {
   const SystemUser = sequelize.define('SystemUser', {
-    fullname: DataTypes.STRING,
-    email: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    status: DataTypes.INTEGER
+    FullName: DataTypes.STRING,
+    Email: DataTypes.STRING,
+    Phone: DataTypes.STRING,
+    Username: DataTypes.STRING,
+    Password: DataTypes.STRING,
+    Status: DataTypes.INTEGER
   }, {});
   SystemUser.beforeSave((user, options) => {
-    if (user.changed('password')) {
-      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+    if (user.changed('Password')) {
+      user.Password = bcrypt.hashSync(user.Password, bcrypt.genSaltSync(10), null);
     }
   });
   SystemUser.prototype.comparePassword = function (passw, cb) {
     bcrypt.compare(passw, this.password, function (err, isMatch) {
-        if (err) {
-            return cb(err);
-        }
-        cb(null, isMatch);
+      if (err) {
+        return cb(err);
+      }
+      cb(null, isMatch);
     });
   };
 
-  SystemUser.associate = function(models) {
-    // associations can be defined here
+  SystemUser.associate = function (models) {
+    SystemUser.hasMany(models.Task, {
+      foreignKey: 'UserId',
+      as: 'Tasks'
+    });
   };
   return SystemUser;
 };

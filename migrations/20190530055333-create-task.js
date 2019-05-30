@@ -8,16 +8,19 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      UserId:{
+        type: Sequelize.INTEGER
+      },
+      Title: {
         type: Sequelize.STRING
       },
-      description: {
+      Description: {
         type: Sequelize.STRING
       },
-      due: {
+      Due: {
         type: Sequelize.DATE
       },
-      status: {
+      Status: {
         type: Sequelize.INTEGER
       },
       createdAt: {
